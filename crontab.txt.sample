@@ -1,0 +1,3 @@
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+MAILTO=dev@brownbox.net.au
+00 01 * * * cd /var/www/vhosts/sitename/wp-content/plugins/bbconnect-kpis/ && /usr/bin/php /var/www/vhosts/sitename/wp-content/plugins/bbconnect-kpis/cron.php > /var/www/vhosts/sitename/wp-content/plugins/bbconnect-kpis/cron.log
