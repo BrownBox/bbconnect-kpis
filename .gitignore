@@ -1,1 +1,4 @@
+.LOCK
+config.php
 cron.log
+next_date

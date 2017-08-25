@@ -1,22 +1,27 @@
 <?php
 /**
- * Plugin Name: BBConnect KPI Addon
- * Plugin URI: n/a
- * Description: A framework for adding KPI functionality to BB Connect
- * Version: 0.0.1
+ * Plugin Name: Connexions KPIs
+ * Plugin URI: http://connexionscrm.com/
+ * Description: Stay up to date with the status of each of your contacts and the unique segment they belong to
+ * Version: 0.1
  * Author: Brown Box
  * Author URI: http://brownbox.net.au
  * License: Proprietary Brown Box
  */
-define( 'KPI_VER', '0.0.1' );
-define( 'KPI_URL', plugin_dir_url( __FILE__ ) );
-define( 'KPI_DIR', plugin_dir_path(__FILE__) );
-define( 'KPI_SLUG', plugin_basename( __FILE__ ) );
+define('BBCONNECT_KPI_VERSION', '0.1');
+define('BBCONNECT_KPI_DIR', plugin_dir_path(__FILE__));
+define('BBCONNECT_KPI_URL', plugin_dir_url(__FILE__));
+
+require_once (BBCONNECT_KPI_DIR.'fx.php');
 
 function bbconnect_kpi_init() {
     if (!defined('BBCONNECT_VER')) {
         add_action('admin_init', 'bbconnect_kpi_deactivate');
         add_action('admin_notices', 'bbconnect_kpi_deactivate_notice');
+        return;
+    }
+    if (is_admin()) {
+        new BbConnectUpdates(__FILE__, 'BrownBox', 'bbconnect-kpis');
     }
 }
 add_action('plugins_loaded', 'bbconnect_kpi_init');
@@ -26,7 +31,8 @@ function bbconnect_kpi_deactivate() {
 }
 
 function bbconnect_kpi_deactivate_notice() {
-    echo '<div class="updated"><p><strong>BBConnect KPI Addon</strong> has been <strong>deactivated</strong> as it requires BB Connect.</p></div>';
-    if (isset( $_GET['activate']))
+    echo '<div class="updated"><p><strong>Connections KPIs</strong> has been <strong>deactivated</strong> as it requires Connexions.</p></div>';
+    if (isset( $_GET['activate'])) {
         unset( $_GET['activate']);
+    }
 }
