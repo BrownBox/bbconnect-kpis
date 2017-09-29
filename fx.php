@@ -39,3 +39,26 @@ function bbconnect_kpi_cron_flush() {
     @ob_flush();
     flush();
 }
+
+
+/*
+ * Set recurring donor to true
+ */
+add_action('bb_cart_post_purchase', 'set_recurring_field_value');
+function set_recurring_field_value($cart_items, $entry, $form, $post_id) {
+    $kpi_prefix = 'kpi_';
+    if (is_multisite() && get_current_blog_id() != SITE_ID_CURRENT_SITE) {
+        $kpi_prefix .= get_current_blog_id().'_';
+    }
+    foreach ($cart_items as $item) {
+        if (!empty($item['frequency']) && $item['frequency'] != 'one-off') {
+            foreach ($form['fields'] as $field){
+                if($field->type == 'email'){
+                    $email = $entry[$field['id']];
+                }
+            }
+            $user = get_user_by_email($email);
+            update_user_meta($user->ID, $kpi_prefix.'recurring_donation', true);
+        }
+    }
+}
