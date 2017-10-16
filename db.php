@@ -8,6 +8,7 @@ function bbconnect_kpi_updates() {
         // List of versions that involved a DB update - each one must have a corresponding function below
         $db_versions = array(
                 '0.2',
+                '0.3',
         );
 
         foreach ($db_versions as $version) {
@@ -28,7 +29,7 @@ function bbconnect_kpi_db_update_0_2() {
                 'source' => $source,
                 'meta_key' => $kpi_prefix.'recurring_donation',
                 'tag' => '',
-                'name' => __('Recurring Donation', 'bbconnect'),
+                'name' => __('Recurring Donor', 'bbconnect'),
                 'options' => array(
                         'admin' => true,
                         'user' => false,
@@ -37,7 +38,6 @@ function bbconnect_kpi_db_update_0_2() {
                         'public' => false,
                         'req' => false,
                         'field_type' => 'checkbox',
-                        'choices' => array('manual' => __('Manually Created', 'bbconnect'), 'form' => __('Form Submission', 'bbconnect'), '' => __('Unknown', 'bbconnect')),
                 ),
                 'help' => '',
         ),
@@ -45,7 +45,7 @@ function bbconnect_kpi_db_update_0_2() {
             'source' => $source,
             'meta_key' => 'kpis',
             'tag' => '',
-            'name' => __('KPIs Field', 'bbconnect'),
+            'name' => __('KPIs', 'bbconnect'),
             'options' => array(
                     'admin' => true,
                     'user' => false,
@@ -58,32 +58,11 @@ function bbconnect_kpi_db_update_0_2() {
             ),
             'help' => '',
         ),
-//         array(
-//             'source' => $source,
-//             'meta_key' => 'transaction_count_kpis',
-//             'tag' => '',
-//             'name' => __('KPIs Transaction Count', 'bbconnect'),
-//             'options' => array(
-//                     'admin' => true,
-//                     'user' => false,
-//                     'signup' => false,
-//                     'reports' => true,
-//                     'public' => false,
-//                     'req' => false,
-//                     'field_type' => 'section',
-//                     'choices' => bbconnect_process_defaults(bbconnect_kpis_transaction_count_fields(), 'section_kpis_transaction_count', 'transaction_count_kpis'),
-//             ),
-//             'help' => '',
-//         ),
     );
 
     $field_keys = array();
 
     foreach ($field as $key => $value) {
-//         if (false != get_option('bbconnect_'.$value['meta_key'])) {
-//             continue;
-//         }
-
         $field_keys[] = $value['meta_key'];
         update_option('bbconnect_'.$value['meta_key'], $value);
     }
@@ -172,7 +151,52 @@ function bbconnect_kpi_db_update_0_2() {
     }
 }
 
-function bbconnect_kpis_transaction_amount_fields(){
+function bbconnect_kpi_db_update_0_3() {
+    global $wpdb;
+    $table_name_user_history = bbconnectKpiReports::get_user_history_table_name();
+    $table_name_giving_summary = bbconnectKpiReports::get_summary_table_name();
+    $charset_collate = $wpdb->get_charset_collate();
+    $sql_user_history = "
+        CREATE TABLE IF NOT EXISTS $table_name_user_history (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            user_id mediumint(9) NOT NULL,
+            segment_id mediumint(9) NOT NULL,
+            transaction_count_today mediumint(9) NOT NULL DEFAULT 0,
+            transaction_total_amount_today decimal(10,0) NOT NULL DEFAULT 0,
+            lapsed_date TIMESTAMP NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            PRIMARY KEY id (id),
+            KEY user_id (user_id),
+            KEY segment_id (segment_id)
+        ) $charset_collate;";
+
+    $sql_giving_summary = "
+        CREATE TABLE IF NOT EXISTS $table_name_giving_summary (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            year MEDIUMINT(4) NOT NULL,
+            month TINYINT(2) NOT NULL,
+            rule varchar(100) NOT NULL,
+            segment_id mediumint(9) NOT NULL,
+            segment_name varchar(100) NOT NULL,
+            current_year decimal(10,2) NOT NULL DEFAULT 0,
+            previous_year_1 decimal(10,2) NOT NULL DEFAULT 0,
+            previous_year_2 decimal(10,2) NOT NULL DEFAULT 0,
+            current_month decimal(10,2) NOT NULL DEFAULT 0,
+            previous_month_1 decimal(10,2) NOT NULL DEFAULT 0,
+            previous_month_2 decimal(10,2) NOT NULL DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            updated_at TIMESTAMP NOT NULL,
+            PRIMARY KEY id (id),
+            KEY segment_id (segment_id),
+            KEY date (year, month),
+            KEY rule (rule)
+        ) $charset_collate;";
+
+    dbDelta($sql_user_history);
+    dbDelta($sql_giving_summary);
+}
+
+function bbconnect_kpis_transaction_amount_fields() {
     $kpi_prefix = 'kpi_';
     if (is_multisite() && get_current_blog_id() != SITE_ID_CURRENT_SITE) {
         $kpi_prefix .= get_current_blog_id().'_';

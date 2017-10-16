@@ -3,17 +3,23 @@
  * Plugin Name: Connexions KPIs
  * Plugin URI: http://connexionscrm.com/
  * Description: Stay up to date with the status of each of your contacts and the unique segment they belong to
- * Version: 0.2
+ * Version: 0.3
  * Author: Brown Box
  * Author URI: http://brownbox.net.au
  * License: Proprietary Brown Box
  */
-define('BBCONNECT_KPI_VERSION', '0.2');
+define('BBCONNECT_KPI_VERSION', '0.3');
 define('BBCONNECT_KPI_DIR', plugin_dir_path(__FILE__));
 define('BBCONNECT_KPI_URL', plugin_dir_url(__FILE__));
 
 require_once(BBCONNECT_KPI_DIR.'db.php');
 require_once(BBCONNECT_KPI_DIR.'fx.php');
+require_once(BBCONNECT_KPI_DIR.'reports/core.php');
+require_once(BBCONNECT_KPI_DIR.'reports/add-menu-page.php');
+require_once(BBCONNECT_KPI_DIR.'reports/output/donor_report.php');
+require_once(BBCONNECT_KPI_DIR.'reports/output/segment_report.php');
+require_once(BBCONNECT_KPI_DIR.'highcharts/bbconnect-add-dashboard-widget.php');
+require_once(BBCONNECT_KPI_DIR.'highcharts/scripts.php');
 
 function bbconnect_kpi_init() {
     if (!defined('BBCONNECT_VER')) {
