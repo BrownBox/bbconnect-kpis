@@ -42,6 +42,7 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
         }
     }
     closedir($dir);
+    sort($files);
 
     if (is_multisite()) {
         // Get all blog ids
