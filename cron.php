@@ -22,6 +22,7 @@ require_once(dirname(__FILE__).'/../../../wp-load.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ini_set('memory_limit', '2056M'); // 2GB should be plenty for most sites
 
 global $wpdb, $blog_id;
 
