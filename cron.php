@@ -5,7 +5,7 @@
 
 $lockfile = dirname(__FILE__).'/.LOCK';
 if (file_exists($lockfile) && filemtime($lockfile) >= strtotime('-12 hours')) {
-    die('Lockfile exists. Exiting.');
+    die('Lockfile exists. Exiting.'."\n");
 }
 
 $start = microtime(true);
@@ -84,12 +84,15 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
             $kpi_prefix .= $tmp_blog_id.'_';
             $wp_prefix = $wpdb->get_blog_prefix($tmp_blog_id);
         }
+        echo 'KPI prefix is '.$kpi_prefix.' and WP Prefix is '.$wp_prefix."\n";
+        bbconnect_kpi_cron_flush();
 
         $args = array(
                 'blog_id' => $tmp_blog_id,
         );
         $users = get_users($args);
         echo count($users).' users found'."\n";
+        bbconnect_kpi_cron_flush();
 
         foreach ($files as $filename) {
             $part_start = microtime(true);
