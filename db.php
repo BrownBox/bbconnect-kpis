@@ -27,7 +27,7 @@ function bbconnect_kpi_db_update_0_2() {
     $field = array(
         array(
                 'source' => $source,
-                'meta_key' => $kpi_prefix.'recurring_donation',
+                'meta_key' => 'recurring_donation',
                 'tag' => '',
                 'name' => __('Recurring Donor', 'bbconnect'),
                 'options' => array(
