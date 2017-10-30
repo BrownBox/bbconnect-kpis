@@ -38,6 +38,7 @@ function bbconnect_kpi_db_update_0_2() {
                         'public' => false,
                         'req' => false,
                         'field_type' => 'checkbox',
+                        'choices' => 'false',
                 ),
                 'help' => '',
         ),
@@ -1410,7 +1411,7 @@ function bbconnect_kpis_transaction_amount_fields() {
                             'unique' => true,
                             'field_type' => 'checkbox',
                             'options' => false,
-                            'choices' => array()
+                            'choices' => 'false',
                     ),
                     'help' => ''
             ),
@@ -1429,7 +1430,7 @@ function bbconnect_kpis_transaction_amount_fields() {
                             'unique' => true,
                             'field_type' => 'checkbox',
                             'options' => false,
-                            'choices' => array()
+                            'choices' => 'false',
                     ),
                     'help' => ''
             ),
@@ -1448,7 +1449,6 @@ function bbconnect_kpis_transaction_amount_fields() {
                             'unique' => true,
                             'field_type' => 'number',
                             'is_currency' => true,
-                            'choices' => array()
                     ),
                     'help' => ''
             ),
