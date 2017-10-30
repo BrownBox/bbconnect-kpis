@@ -9,6 +9,7 @@ function bbconnect_kpi_updates() {
         $db_versions = array(
                 '0.2',
                 '0.3',
+                '0.3.2',
         );
 
         foreach ($db_versions as $version) {
@@ -25,40 +26,40 @@ function bbconnect_kpi_db_update_0_2() {
     $source = 'bbconnect-kpis';
 
     $field = array(
-        array(
-                'source' => $source,
-                'meta_key' => 'recurring_donation',
-                'tag' => '',
-                'name' => __('Recurring Donor', 'bbconnect'),
-                'options' => array(
-                        'admin' => true,
-                        'user' => false,
-                        'signup' => false,
-                        'reports' => true,
-                        'public' => false,
-                        'req' => false,
-                        'field_type' => 'checkbox',
-                        'choices' => 'false',
-                ),
-                'help' => '',
-        ),
-        array(
-            'source' => $source,
-            'meta_key' => 'kpis',
-            'tag' => '',
-            'name' => __('KPIs', 'bbconnect'),
-            'options' => array(
-                    'admin' => true,
-                    'user' => false,
-                    'signup' => false,
-                    'reports' => true,
-                    'public' => false,
-                    'req' => false,
-                    'field_type' => 'section',
-                    'choices' => bbconnect_process_defaults(bbconnect_kpis_transaction_amount_fields(), 'section_kpis', 'kpis'),
+            array(
+                    'source' => $source,
+                    'meta_key' => 'recurring_donation',
+                    'tag' => '',
+                    'name' => __('Recurring Donor', 'bbconnect'),
+                    'options' => array(
+                            'admin' => true,
+                            'user' => false,
+                            'signup' => false,
+                            'reports' => true,
+                            'public' => false,
+                            'req' => false,
+                            'field_type' => 'checkbox',
+                            'choices' => 'false',
+                    ),
+                    'help' => '',
             ),
-            'help' => '',
-        ),
+            array(
+                    'source' => $source,
+                    'meta_key' => 'kpis',
+                    'tag' => '',
+                    'name' => __('KPIs', 'bbconnect'),
+                    'options' => array(
+                            'admin' => true,
+                            'user' => false,
+                            'signup' => false,
+                            'reports' => true,
+                            'public' => false,
+                            'req' => false,
+                            'field_type' => 'section',
+                            'choices' => bbconnect_process_defaults(bbconnect_kpis_transaction_amount_fields(), 'section_kpis', 'kpis'),
+                    ),
+                    'help' => '',
+            ),
     );
 
     $field_keys = array();
@@ -195,6 +196,79 @@ function bbconnect_kpi_db_update_0_3() {
 
     dbDelta($sql_user_history);
     dbDelta($sql_giving_summary);
+}
+
+function bbconnect_kpi_db_update_0_3_2() {
+    $kpi_prefix = 'kpi_';
+    if (is_multisite() && get_current_blog_id() != SITE_ID_CURRENT_SITE) {
+        $kpi_prefix .= get_current_blog_id().'_';
+    }
+    $source = 'bbconnect-kpis';
+
+    $field = array(
+            array(
+                    'source' => $source,
+                    'meta_key' => $kpi_prefix.'days_since_created',
+                    'tag' => '',
+                    'name' => __('Days Since Created', 'bbconnect'),
+                    'options' => array(
+                            'admin' => true,
+                            'user' => false,
+                            'signup' => false,
+                            'reports' => true,
+                            'public' => false,
+                            'req' => false,
+                            'field_type' => 'number',
+                            'choices' => 'false',
+                    ),
+                    'help' => '',
+            ),
+    );
+
+    $field_keys = array();
+
+    foreach ($field as $key => $value) {
+        $field_keys[] = $value['meta_key'];
+        update_option('bbconnect_'.$value['meta_key'], $value);
+    }
+
+    $umo = get_option('_bbconnect_user_meta');
+    if (!empty($field_keys)) {
+        foreach ($umo as $uk => $uv) {
+            // Add to the account info section
+            foreach ($uv as $suk => $suv) {
+                if ('bbconnect_account_information' == $suv) {
+                    $acct = get_option($suv);
+                    foreach ($field_keys as $fk => $fv) {
+                        $acct['options']['choices'][] = $fv;
+                    }
+                    update_option($suv, $acct);
+                    $aok = true;
+                }
+            }
+            // If we couldn't find the account info section try the KPIs section
+            if (!isset($aok)) {
+                foreach ($uv as $suk => $suv) {
+                    if ('bbconnect_kpis' == $suv) {
+                        $kpis = get_option($suv);
+                        foreach ($field_keys as $fk => $fv) {
+                            $kpis['options']['choices'][] = $fv;
+                        }
+                        update_option($suv, $kpis);
+                        $aok = true;
+                    }
+                }
+            }
+        }
+        // If we couldn't find either section just add to column 3
+        if (!isset($aok)) {
+            foreach ($field_keys as $fk => $fv) {
+                $umo['column_3'][] = 'bbconnect_' . $fv;
+            }
+
+            update_option('_bbconnect_user_meta', $umo);
+        }
+    }
 }
 
 function bbconnect_kpis_transaction_amount_fields() {
