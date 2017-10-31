@@ -1,8 +1,9 @@
 <?php
 /**
- * Script to be run nightly as a cron job which updates all the KPI and history data
+ * Script to be run hourly as a cron job which updates all the KPI and segment data
  */
 
+// Lockfile to stop cron running over the top of itself
 $lockfile = dirname(__FILE__).'/.LOCK';
 if (file_exists($lockfile) && filemtime($lockfile) >= strtotime('-12 hours')) {
     die('Lockfile exists. Exiting.'."\n");
@@ -18,11 +19,16 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
 }
 $_SERVER['HTTP_HOST'] = $http_host;
 
-require_once(dirname(__FILE__).'/../../../wp-load.php');
-
-error_reporting(E_ALL);
+// Error reporting and memory settings
+error_reporting(E_ALL & ~E_STRICT);
 ini_set('display_errors', 1);
+if (!defined('WP_DEBUG')) {
+    define('WP_DEBUG', true);
+}
 ini_set('memory_limit', '2056M'); // 2GB should be plenty for most sites
+
+// Load WP
+require_once(dirname(__FILE__).'/../../../wp-load.php');
 
 global $wpdb, $blog_id;
 
