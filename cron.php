@@ -67,7 +67,7 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
             $today = new DateTime(current_time('Y-m-d'), $tz);
         }
 
-        $last_run = get_option('last_cron_date', 0);
+        $last_run = get_option('bbconnect_kpis_last_cron_date', 0);
         echo 'Last run was '.$last_run.' ('.date('Y-m-d H:i:s', $last_run).'); today is '.strtotime($today->format('Y-m-d')).' ('.$today->format('Y-m-d H:i:s').')'."\n";
         if (strtotime($today->format('Y-m-d')) <= $last_run) { // Already processed this site today
             echo 'Nothing to do!'."\n";
@@ -106,6 +106,8 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
             bbconnect_kpi_cron_flush();
             gc_collect_cycles();
         }
+
+        update_option('bbconnect_kpis_last_cron_date', strtotime($today->format('Y-m-d')));
     }
 
     if (file_exists(dirname(__FILE__).'/next_date')) {
