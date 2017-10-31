@@ -32,12 +32,17 @@ function bbconnect_kpi_init() {
         bbconnect_kpi_updates();
         // Plugin updates
         new BbConnectUpdates(__FILE__, 'BrownBox', 'bbconnect-kpis');
+        // Make sure our MU plugin is installed. @todo allow for updates of MU plugin
+        $mu_file = trailingslashit(WP_CONTENT_DIR).'mu-plugins/bbconnect-kpis-mu.php';
+        if (!file_exists($mu_file)) {
+            copy(BBCONNECT_KPI_DIR.'bbconnect-kpis-mu.php', $mu_file);
+        }
     }
 }
 add_action('plugins_loaded', 'bbconnect_kpi_init');
 
 function bbconnect_kpi_deactivate() {
-    deactivate_plugins(plugin_basename( __FILE__ ));
+    deactivate_plugins(plugin_basename(__FILE__));
 }
 
 function bbconnect_kpi_deactivate_notice() {
