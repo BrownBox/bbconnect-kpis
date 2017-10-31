@@ -14,7 +14,7 @@ $args = array(
 );
 $segments = get_posts($args);
 echo '  '.count($segments).' to process'."\n";
-cron_flush();
+bbconnect_kpi_cron_flush();
 
 //LOOP THROUGH ALL SEARCH CRITERIA OR SEGMENTS
 foreach ($segments as $segment) {
@@ -39,7 +39,7 @@ foreach ($segments as $segment) {
         }
     }
     echo '      '.count($segment_users).' users match'."\n";
-    cron_flush();
+    bbconnect_kpi_cron_flush();
 
     $report_manager = new bbconnectKpiReports($segment_users, $segment->ID, $today, $yesterday);
     $rules = $report_manager->get_rules();
@@ -101,5 +101,5 @@ foreach ($segments as $segment) {
     }
     unset($segment_users, $report_manager, $rules, $summary, $summary_id_arr);
     gc_collect_cycles();
-	cron_flush();
+    bbconnect_kpi_cron_flush();
 }

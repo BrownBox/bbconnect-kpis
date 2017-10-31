@@ -110,11 +110,11 @@ class bbconnectKpiReports {
             $month_2 = $var_date->format("Y-m");
 
             $var_date = clone $this->yesterday;
-            $year = calculateFiscalYearForDate($this->yesterday);
+            $year = bbconnect_kpi_calculate_fiscal_year_for_date($this->yesterday);
             $var_date->sub(new DateInterval('P1Y'));
-            $year_1 = calculateFiscalYearForDate($var_date);
+            $year_1 = bbconnect_kpi_calculate_fiscal_year_for_date($var_date);
             $var_date->sub(new DateInterval('P1Y'));
-            $year_2 = calculateFiscalYearForDate($var_date);
+            $year_2 = bbconnect_kpi_calculate_fiscal_year_for_date($var_date);
 
             $stats_template = array(
                     'month' => 0,
@@ -134,7 +134,7 @@ class bbconnectKpiReports {
                 $user_registered = $user->user_registered;
 
                 $user_registered_month = date('Y-m',strtotime($user_registered));
-                $user_registered_year = calculateFiscalYearForDate($user_registered);
+                $user_registered_year = bbconnect_kpi_calculate_fiscal_year_for_date($user_registered);
 
                 if ($user_registered_month == $month) {
                     $contacts['new_contacts']['month']++;
@@ -143,7 +143,7 @@ class bbconnectKpiReports {
                     $contacts['new_contacts']['month_1']++;
                     $contacts['new_contacts_total']['month_1']++;
                 } else if($user_registered_month == $month_2) {
-                    $contacts[$category]['month_2']++;
+                    $contacts['new_contacts']['month_2']++;
                     $contacts['new_contacts_total']['month_2']++;
                 }
 
@@ -187,11 +187,11 @@ class bbconnectKpiReports {
         $month_2 = $var_date->format("Y-m");
 
         $var_date = clone $this->yesterday;
-        $year = calculateFiscalYearForDate($this->yesterday);
+        $year = bbconnect_kpi_calculate_fiscal_year_for_date($this->yesterday);
         $var_date->sub(new DateInterval('P1Y'));
-        $year_1 = calculateFiscalYearForDate($var_date);
+        $year_1 = bbconnect_kpi_calculate_fiscal_year_for_date($var_date);
         $var_date->sub(new DateInterval('P1Y'));
-        $year_2 = calculateFiscalYearForDate($var_date);
+        $year_2 = bbconnect_kpi_calculate_fiscal_year_for_date($var_date);
 
         $count_month = 0;
         $count_month_1 = 0;
@@ -204,7 +204,7 @@ class bbconnectKpiReports {
 
         global $blog_id;
         $kpi_prefix = 'kpi_';
-        if ($blog_id != SITE_ID_CURRENT_SITE) {
+        if (is_multisite() && $blog_id != SITE_ID_CURRENT_SITE) {
             $kpi_prefix .= $blog_id.'_';
         }
         foreach ($users as $key => $user) {
@@ -214,7 +214,7 @@ class bbconnectKpiReports {
             }
 
             $first_donation_month = date('Y-m',strtotime($first_donation_date));
-            $first_donation_year = calculateFiscalYearForDate($first_donation_date);
+            $first_donation_year = bbconnect_kpi_calculate_fiscal_year_for_date($first_donation_date);
 
             if ($first_donation_month == $month) {
                 $count_month = $count_month + 1;
@@ -352,7 +352,7 @@ class bbconnectKpiReports {
 
         global $blog_id;
         $kpi_prefix = 'kpi_';
-        if ($blog_id != SITE_ID_CURRENT_SITE) {
+        if (is_multisite() && $blog_id != SITE_ID_CURRENT_SITE) {
             $kpi_prefix .= $blog_id.'_';
         }
         foreach ($users as $key => $user) {
@@ -390,7 +390,7 @@ class bbconnectKpiReports {
 
         $summary = array();
         foreach (array_keys($totals) as $key) {
-            $summary[$key] = calculate_average($counts[$key], $totals[$key]);
+            $summary[$key] = bbconnect_kpi_calculate_average($counts[$key], $totals[$key]);
         }
 
         return $summary;
@@ -410,7 +410,7 @@ class bbconnectKpiReports {
 
         global $blog_id;
         $kpi_prefix = 'kpi_';
-        if ($blog_id != SITE_ID_CURRENT_SITE) {
+        if (is_multisite() && $blog_id != SITE_ID_CURRENT_SITE) {
             $kpi_prefix .= $blog_id.'_';
         }
         foreach ($users as $key => $user) {
@@ -452,7 +452,7 @@ class bbconnectKpiReports {
 
         global $blog_id;
         $kpi_prefix = 'kpi_';
-        if ($blog_id != SITE_ID_CURRENT_SITE) {
+        if (is_multisite() && $blog_id != SITE_ID_CURRENT_SITE) {
             $kpi_prefix .= $blog_id.'_';
         }
         foreach ($users as $key => $user) {
