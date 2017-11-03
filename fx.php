@@ -1,7 +1,7 @@
 <?php
 /**
  * Calculate the current financial year
- * @param $inputDate string The date to calculate for
+ * @param $inputDate string|integer|DateTime The date to calculate for. Can be a DateTime object, Unix timestamp or any parseable string recognised by strtotime()
  * @param $fyStart string The start of the financial year, mm-dd format
  * @param $fyEnd string The end of the financial year, mm-dd format
  * @return integer
@@ -9,6 +9,8 @@
 function bbconnect_kpi_calculate_fiscal_year_for_date($inputDate, $fyStart = '07-01', $fyEnd = '06-30') {
     if ($inputDate instanceof DateTime) {
         $date = $inputDate->getTimestamp();
+    } elseif (is_int($inputDate)) {
+        $date = $inputDate;
     } else {
         $date = strtotime($inputDate);
     }
