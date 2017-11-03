@@ -12,7 +12,6 @@ class bbconnectKpiReports {
             'average_donation' => 'Average Donation Amount',
             'donation_count' => 'No. of Donations',
             'new_contacts' => 'New Names',
-            'new_contacts_total' => 'New Names Total',
             'new_donors' => 'New Donors',
             'lapsed_donors' => 'New Lapsed Donors',
             'total_live_donors' => 'Total Live Donors',
@@ -127,7 +126,6 @@ class bbconnectKpiReports {
 
             $contacts = array(
                     'new_contacts' => $stats_template,
-                    'new_contacts_total' => $stats_template,
             );
 
             foreach ($users as $user) {
@@ -138,24 +136,18 @@ class bbconnectKpiReports {
 
                 if ($user_registered_month == $month) {
                     $contacts['new_contacts']['month']++;
-                    $contacts['new_contacts_total']['month']++;
                 } else if($user_registered_month == $month_1) {
                     $contacts['new_contacts']['month_1']++;
-                    $contacts['new_contacts_total']['month_1']++;
                 } else if($user_registered_month == $month_2) {
                     $contacts['new_contacts']['month_2']++;
-                    $contacts['new_contacts_total']['month_2']++;
                 }
 
                 if ($user_registered_year == $year) {
                     $contacts['new_contacts']['year']++;
-                    $contacts['new_contacts_total']['year']++;
                 } else if($user_registered_year == $year_1) {
                     $contacts['new_contacts']['year_1']++;
-                    $contacts['new_contacts_total']['year_1']++;
                 } else if($user_registered_year == $year_2) {
                     $contacts['new_contacts']['year_2']++;
-                    $contacts['new_contacts_total']['year_2']++;
                 }
             }
 
@@ -601,7 +593,7 @@ class bbconnectKpiReports {
                 SELECT rule, year, month,
                     SUM(current_month) AS current_month
                 FROM $summary_table_name
-                WHERE rule IN ('new_contacts_total', 'new_donors', 'lapsed_donors')
+                WHERE rule IN ('new_contacts', 'new_donors', 'lapsed_donors')
                 GROUP BY rule, year, month
                 ORDER BY year ASC, month ASC
         ";

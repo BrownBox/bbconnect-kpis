@@ -6,7 +6,7 @@ function bbconnect_donations_widget($post, $callback_args) {
 			require_once(ABSPATH.'/'.PLUGINDIR.'/gravityforms/currency.php');
 		}
         $currencyOptions = get_option('bb-currency-options-group');
-    	$currency = RGCurrency::get_currency($currencyOptions['bb_currency_code']);
+        	$currency = RGCurrency::get_currency($currencyOptions['bb_currency_code']);
 
         echo '
         <script type="text/javascript">
@@ -23,11 +23,11 @@ function bbconnect_donations_widget($post, $callback_args) {
         $report_url = '/wp-admin/users.php?page=donor_report_submenu&month=';
         foreach ($recent_donations as $month => $donation_data) {
             $url_month = date('Y-n', strtotime($month));
-    	  	echo 'donation_months['.$i.'] = "'.$month.'";'."\n";
-    	  	echo 'donation_totals['.$i.'] = {y:'.$donation_data["total_donations"].',url:"'.$report_url.$url_month.'"};'."\n";
-    	  	echo 'donation_averages['.$i.'] = {y:'.$donation_data["average_donation"].',url:"'.$report_url.$url_month.'"};'."\n";
-    	  	echo 'donation_counts['.$i.'] = {y:'.$donation_data["donation_count"].',url:"'.$report_url.$url_month.'"};'."\n";
-    	  	$i++;
+        	  	echo 'donation_months['.$i.'] = "'.$month.'";'."\n";
+        	  	echo 'donation_totals['.$i.'] = {y:'.(float)$donation_data["total_donations"].',url:"'.$report_url.$url_month.'"};'."\n";
+        	  	echo 'donation_averages['.$i.'] = {y:'.(float)$donation_data["average_donation"].',url:"'.$report_url.$url_month.'"};'."\n";
+        	  	echo 'donation_counts['.$i.'] = {y:'.(int)$donation_data["donation_count"].',url:"'.$report_url.$url_month.'"};'."\n";
+        	  	$i++;
         }
         echo '
         </script>';
@@ -134,31 +134,35 @@ function bbconnect_donations_widget($post, $callback_args) {
 
 function bbconnect_contacts_widget($post, $callback_args) {
     if (class_exists('bbconnectKpiReports')) {
-
         $contacts_history = bbconnectKpiReports::get_dashboard_contacts();
+        $max_months = 18;
 
         echo '
         <script type="text/javascript">
-            var contact_months = new Array('.count($contacts_history).');
-            var new_contacts = new Array('.count($contacts_history).');
-            var new_donors = new Array('.count($contacts_history).');
-            var lapsed_donors = new Array('.count($contacts_history).');
+            var contact_months = new Array('.min($max_months, count($contacts_history)).');
+            var new_contacts = new Array('.min($max_months, count($contacts_history)).');
+            var new_donors = new Array('.min($max_months, count($contacts_history)).');
+            var lapsed_donors = new Array('.min($max_months, count($contacts_history)).');
 ';
 
-        $recent_contacts = array_slice($contacts_history, -18);
+        if (count($contacts_history) > $max_months) {
+            $recent_contacts = array_slice($contacts_history, -$max_months);
+        } else {
+            $recent_contacts = $contacts_history;
+        }
         $i = 0;
         $report_url = '/wp-admin/users.php?page=donor_report_submenu&month=';
         foreach ($recent_contacts as $month => $contact_data) {
             $url_month = date('Y-n', strtotime($month));
             echo 'contact_months['.$i.'] = "'.$month.'";'."\n";
-            echo 'new_contacts['.$i.'] = {y:'.$contact_data["new_contacts_total"].',url:"'.$report_url.$url_month.'"};'."\n";
-            echo 'new_donors['.$i.'] = {y:'.$contact_data["new_donors"].',url:"'.$report_url.$url_month.'"};'."\n";
-            echo 'lapsed_donors['.$i.'] = {y:'.$contact_data["lapsed_donors"].',url:"'.$report_url.$url_month.'"};'."\n";
+            echo 'new_contacts['.$i.'] = {y:'.(int)$contact_data["new_contacts"].',url:"'.$report_url.$url_month.'"};'."\n";
+            echo 'new_donors['.$i.'] = {y:'.(int)$contact_data["new_donors"].',url:"'.$report_url.$url_month.'"};'."\n";
+            echo 'lapsed_donors['.$i.'] = {y:'.(int)$contact_data["lapsed_donors"].',url:"'.$report_url.$url_month.'"};'."\n";
             $i++;
         }
         echo '
         </script>';
-        ?>
+?>
         <style type="text/css">
             ${demo.css}
         </style>
@@ -209,15 +213,15 @@ function bbconnect_contacts_widget($post, $callback_args) {
                     series: [{
                         name: 'New Contacts',
                         type: 'spline',
-                        data: new_contacts,
+                        data: new_contacts
                     }, {
                         name: 'New Donors',
                         type: 'spline',
-                        data: new_donors,
+                        data: new_donors
                     }, {
                         name: 'Lapsed Donors',
                         type: 'spline',
-                        data: lapsed_donors,
+                        data: lapsed_donors
                     }]
                 });
             });
