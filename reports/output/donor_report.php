@@ -83,7 +83,7 @@ function bbconnect_kpi_donor_report() {
         $segment_options
         </select>
         </form>
-        <table id='table-donor-report' class='s-report'>
+        <table id='table-donor-report' class='bbconnect-kpi-report'>
             <thead>
                 <tr>
                     <th width='22%'>KPI</th>

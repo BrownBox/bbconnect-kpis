@@ -72,7 +72,7 @@ function bbconnect_kpi_segment_report() {
         $rule_options
         </select>
         </form>
-        <table id='table-segment-report' class='s-report' border='1' cellspacing='0' cellpadding='0' width='99%'>
+        <table id='table-segment-report' class='bbconnect-kpi-report'>
             <thead>
                 <tr>
                     <th width='22%'>Segment</th>

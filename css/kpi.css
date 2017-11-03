@@ -1,0 +1,16 @@
+table.bbconnect-kpi-report {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+table.bbconnect-kpi-report td, table.bbconnect-kpi-report th {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    text-align: left;
+}
+
+table.bbconnect-kpi-report td, table.bbconnect-kpi-report th:not(:first-of-type) {
+    text-align: right;
+}

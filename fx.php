@@ -67,3 +67,15 @@ function bbconnect_kpi_set_recurring_field_value($cart_items, $entry, $form, $po
         }
     }
 }
+
+add_action('admin_menu', 'bbconnect_kpi_register_reports_menu_pages');
+function bbconnect_kpi_register_reports_menu_pages() {
+    add_submenu_page('users.php', 'Donor Reports', 'Donor Reports', 'list_users', 'donor_report_submenu','bbconnect_kpi_donor_report');
+    add_submenu_page('users.php', 'Segment Report', 'Segment Report', 'list_users', 'segment_report_submenu','bbconnect_kpi_segment_report');
+}
+
+add_action('admin_enqueue_scripts', 'bbconnect_kpi_enqueue_scripts');
+function bbconnect_kpi_enqueue_scripts() {
+    wp_enqueue_style('bbconnect_kpi_css', BBCONNECT_KPI_URL.'css/kpi.css', array(), BBCONNECT_KPI_VERSION);
+    wp_enqueue_script('bbconnect_kpi_js', BBCONNECT_KPI_URL.'js/kpi.js', array(), BBCONNECT_KPI_VERSION, true);
+}

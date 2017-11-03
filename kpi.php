@@ -15,7 +15,6 @@ define('BBCONNECT_KPI_URL', plugin_dir_url(__FILE__));
 require_once(BBCONNECT_KPI_DIR.'db.php');
 require_once(BBCONNECT_KPI_DIR.'fx.php');
 require_once(BBCONNECT_KPI_DIR.'reports/core.php');
-require_once(BBCONNECT_KPI_DIR.'reports/add-menu-page.php');
 require_once(BBCONNECT_KPI_DIR.'reports/output/donor_report.php');
 require_once(BBCONNECT_KPI_DIR.'reports/output/segment_report.php');
 require_once(BBCONNECT_KPI_DIR.'highcharts/bbconnect-add-dashboard-widget.php');
