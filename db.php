@@ -10,6 +10,7 @@ function bbconnect_kpi_updates() {
                 '0.2',
                 '0.3',
                 '0.3.2',
+                '0.3.5',
         );
 
         foreach ($db_versions as $version) {
@@ -133,9 +134,6 @@ function bbconnect_kpi_db_update_0_2() {
             'Segment - 322 - $20 - $99.99 + &amp; 1 gift 13m - 24m ago' => 'a:8:{i:1;a:4:{s:4:"type";s:4:"user";s:5:"field";s:23:"kpi_first_donation_date";s:8:"operator";s:0:"";s:5:"query";a:2:{i:0;s:0:"";i:1;s:0:"";}}i:2;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_last_donation_date";s:8:"operator";s:0:"";s:5:"query";a:2:{i:0;s:0:"";i:1;s:0:"";}}i:3;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_donation_amount_lifetime";s:8:"operator";s:2:"gt";s:5:"query";s:5:"19.99";}i:4;a:4:{s:4:"type";s:4:"user";s:5:"field";s:27:"kpi_donation_count_lifetime";s:8:"operator";s:2:"is";s:5:"query";s:1:"1";}i:5;a:4:{s:4:"type";s:4:"user";s:5:"field";s:29:"kpi_donation_average_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:6;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_days_since_last_donation";s:8:"operator";s:2:"gt";s:5:"query";s:3:"365";}i:7;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_days_since_last_donation";s:8:"operator";s:2:"lt";s:5:"query";s:3:"731";}i:8;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_donation_amount_lifetime";s:8:"operator";s:2:"lt";s:5:"query";s:3:"100";}}',
             'Segment - 400 - New Non-Donors added 0m - 3m' => 'a:6:{i:1;a:4:{s:4:"type";s:4:"user";s:5:"field";s:23:"kpi_first_donation_date";s:8:"operator";s:0:"";s:5:"query";a:2:{i:0;s:0:"";i:1;s:0:"";}}i:2;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_last_donation_date";s:8:"operator";s:0:"";s:5:"query";a:2:{i:0;s:0:"";i:1;s:0:"";}}i:3;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_donation_amount_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:4;a:4:{s:4:"type";s:4:"user";s:5:"field";s:27:"kpi_donation_count_lifetime";s:8:"operator";s:2:"lt";s:5:"query";s:1:"1";}i:5;a:4:{s:4:"type";s:4:"user";s:5:"field";s:29:"kpi_donation_average_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:6;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_days_since_created";s:8:"operator";s:2:"lt";s:5:"query";s:2:"91";}}',
             'Segment - 410 - New Non-Donors added 4m - 6m' => 'a:7:{i:1;a:4:{s:4:"type";s:4:"user";s:5:"field";s:23:"kpi_first_donation_date";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:2;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_last_donation_date";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:3;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_donation_amount_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:4;a:4:{s:4:"type";s:4:"user";s:5:"field";s:27:"kpi_donation_count_lifetime";s:8:"operator";s:2:"is";s:5:"query";s:1:"0";}i:5;a:4:{s:4:"type";s:4:"user";s:5:"field";s:29:"kpi_donation_average_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:6;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_days_since_created";s:8:"operator";s:2:"gt";s:5:"query";s:2:"90";}i:7;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_days_since_created";s:8:"operator";s:2:"lt";s:5:"query";s:3:"183";}}',
-            'Segment - 800 - 0 Donations Last 24m &amp; Last Free Offer 0 - 90 Days' => 'a:8:{i:1;a:4:{s:4:"type";s:4:"user";s:5:"field";s:23:"kpi_first_donation_date";s:8:"operator";s:0:"";s:5:"query";a:2:{i:0;s:0:"";i:1;s:0:"";}}i:2;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_last_donation_date";s:8:"operator";s:0:"";s:5:"query";a:2:{i:0;s:0:"";i:1;s:0:"";}}i:3;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_donation_amount_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:4;a:4:{s:4:"type";s:4:"user";s:5:"field";s:27:"kpi_donation_count_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:5;a:4:{s:4:"type";s:4:"user";s:5:"field";s:29:"kpi_donation_average_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:6;a:4:{s:4:"type";s:4:"user";s:5:"field";s:30:"kpi_donation_count_24m_rolling";s:8:"operator";s:2:"lt";s:5:"query";s:1:"1";}i:7;a:4:{s:4:"type";s:4:"user";s:5:"field";s:30:"kpi_days_since_last_free_offer";s:8:"operator";s:2:"gt";s:5:"query";s:1:"0";}i:8;a:4:{s:4:"type";s:4:"user";s:5:"field";s:30:"kpi_days_since_last_free_offer";s:8:"operator";s:2:"lt";s:5:"query";s:2:"91";}}',
-            'Segment - 810 - 0 Donations Last 24m &amp; Last Free Offer 91 - 180 Days' => 'a:8:{i:1;a:4:{s:4:"type";s:4:"user";s:5:"field";s:23:"kpi_first_donation_date";s:8:"operator";s:0:"";s:5:"query";a:2:{i:0;s:0:"";i:1;s:0:"";}}i:2;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_last_donation_date";s:8:"operator";s:0:"";s:5:"query";a:2:{i:0;s:0:"";i:1;s:0:"";}}i:3;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_donation_amount_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:4;a:4:{s:4:"type";s:4:"user";s:5:"field";s:27:"kpi_donation_count_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:5;a:4:{s:4:"type";s:4:"user";s:5:"field";s:29:"kpi_donation_average_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:6;a:4:{s:4:"type";s:4:"user";s:5:"field";s:30:"kpi_donation_count_24m_rolling";s:8:"operator";s:2:"lt";s:5:"query";s:1:"1";}i:7;a:4:{s:4:"type";s:4:"user";s:5:"field";s:30:"kpi_days_since_last_free_offer";s:8:"operator";s:2:"gt";s:5:"query";s:2:"90";}i:8;a:4:{s:4:"type";s:4:"user";s:5:"field";s:30:"kpi_days_since_last_free_offer";s:8:"operator";s:2:"lt";s:5:"query";s:3:"181";}}',
-            'Segment - 900 - International Donors' => 'a:6:{i:1;a:4:{s:4:"type";s:4:"user";s:5:"field";s:23:"kpi_first_donation_date";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:2;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_last_donation_date";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:3;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_donation_amount_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:4;a:4:{s:4:"type";s:4:"user";s:5:"field";s:27:"kpi_donation_count_lifetime";s:8:"operator";s:2:"is";s:5:"query";s:1:"1";}i:5;a:4:{s:4:"type";s:4:"user";s:5:"field";s:29:"kpi_donation_average_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:6;a:4:{s:4:"type";s:4:"user";s:5:"field";s:17:"address_country_1";s:8:"operator";s:3:"not";s:5:"query";a:1:{i:0;s:2:"AU";}}}',
             'Segment - 999 - All Others' => 'a:5:{i:1;a:4:{s:4:"type";s:4:"user";s:5:"field";s:23:"kpi_first_donation_date";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:2;a:4:{s:4:"type";s:4:"user";s:5:"field";s:22:"kpi_last_donation_date";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:3;a:4:{s:4:"type";s:4:"user";s:5:"field";s:28:"kpi_donation_amount_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:4;a:4:{s:4:"type";s:4:"user";s:5:"field";s:27:"kpi_donation_count_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}i:5;a:4:{s:4:"type";s:4:"user";s:5:"field";s:29:"kpi_donation_average_lifetime";s:8:"operator";s:0:"";s:5:"query";s:0:"";}}',
     );
     foreach ($searches as $title => $content) {
@@ -250,6 +248,79 @@ function bbconnect_kpi_db_update_0_3_2() {
             if (!isset($aok)) {
                 foreach ($uv as $suk => $suv) {
                     if ('bbconnect_kpis' == $suv) {
+                        $kpis = get_option($suv);
+                        foreach ($field_keys as $fk => $fv) {
+                            $kpis['options']['choices'][] = $fv;
+                        }
+                        update_option($suv, $kpis);
+                        $aok = true;
+                    }
+                }
+            }
+        }
+        // If we couldn't find either section just add to column 3
+        if (!isset($aok)) {
+            foreach ($field_keys as $fk => $fv) {
+                $umo['column_3'][] = 'bbconnect_' . $fv;
+            }
+
+            update_option('_bbconnect_user_meta', $umo);
+        }
+    }
+}
+
+function bbconnect_kpi_db_update_0_3_5() {
+    $kpi_prefix = 'kpi_';
+    if (is_multisite() && get_current_blog_id() != SITE_ID_CURRENT_SITE) {
+        $kpi_prefix .= get_current_blog_id().'_';
+    }
+    $source = 'bbconnect-kpis';
+
+    $field = array(
+            array(
+                    'source' => $source,
+                    'meta_key' => $kpi_prefix.'days_since_last_donation',
+                    'tag' => '',
+                    'name' => __('Days Since Last Donation', 'bbconnect'),
+                    'options' => array(
+                            'admin' => true,
+                            'user' => false,
+                            'signup' => false,
+                            'reports' => true,
+                            'public' => false,
+                            'req' => false,
+                            'field_type' => 'number',
+                            'choices' => 'false',
+                    ),
+                    'help' => '',
+            ),
+    );
+
+    $field_keys = array();
+
+    foreach ($field as $key => $value) {
+        $field_keys[] = $value['meta_key'];
+        update_option('bbconnect_'.$value['meta_key'], $value);
+    }
+
+    $umo = get_option('_bbconnect_user_meta');
+    if (!empty($field_keys)) {
+        foreach ($umo as $uk => $uv) {
+            // Add to the KPIs section
+            foreach ($uv as $suk => $suv) {
+                if ('bbconnect_kpis' == $suv) {
+                    $acct = get_option($suv);
+                    foreach ($field_keys as $fk => $fv) {
+                        $acct['options']['choices'][] = $fv;
+                    }
+                    update_option($suv, $acct);
+                    $aok = true;
+                }
+            }
+            // If we couldn't find the account info section try the account info section
+            if (!isset($aok)) {
+                foreach ($uv as $suk => $suv) {
+                    if ('bbconnect_account_information' == $suv) {
                         $kpis = get_option($suv);
                         foreach ($field_keys as $fk => $fv) {
                             $kpis['options']['choices'][] = $fv;
