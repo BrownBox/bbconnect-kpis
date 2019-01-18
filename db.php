@@ -340,6 +340,20 @@ function bbconnect_kpi_db_update_0_3_5() {
             update_option('_bbconnect_user_meta', $umo);
         }
     }
+
+    // Extend core KPI offset functionality. For now we'll just assume that all offset transactions were donations.
+    global $wpdb;
+    $offsets = array(
+            'transaction_amount',
+            'transaction_count',
+            'first_transaction_amount',
+            'first_transaction_date',
+            'last_transaction_amount',
+            'last_transaction_date',
+    );
+    foreach ($offsets as $offset) {
+        $wpdb->query('INSERT INTO '.$wpdb->usermeta.' (user_id, meta_key, meta_value) SELECT user_id, "'.$kpi_prefix.'offset_'.str_replace('transaction', 'donation', $offset).'", meta_value FROM '.$wpdb->usermeta.' WHERE meta_key = "bbconnect_offset_'.$offset.'"');
+    }
 }
 
 function bbconnect_kpis_transaction_amount_fields() {

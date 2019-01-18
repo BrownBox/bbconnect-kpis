@@ -65,14 +65,14 @@ foreach ($users as $user) {
             // Donation Count last 5 FYs
             $kpi_prefix.'donation_count_5fy' => 0,
             // Donation Count Lifetime
-            $kpi_prefix.'donation_count_lifetime' => 0,
+            $kpi_prefix.'donation_count_lifetime' => !empty($user->{$kpi_prefix.'offset_donation_count'}) ? $user->{$kpi_prefix.'offset_donation_count'} : 0,
 
             // Donation Amount last 5 yrs rolling
             $kpi_prefix.'donation_amount_5y_rolling' => 0,
             // Donation Amount last 5 FYs
             $kpi_prefix.'donation_amount_5fy' => 0,
             // Donation Amount Lifetime
-            $kpi_prefix.'donation_amount_lifetime' => 0,
+            $kpi_prefix.'donation_amount_lifetime' => !empty($user->{$kpi_prefix.'offset_donation_amount'}) ? $user->{$kpi_prefix.'offset_donation_amount'} : 0,
 
             // Donation Average last 5 yrs rolling
             $kpi_prefix.'donation_average_5y_rolling' => 0,
@@ -167,7 +167,7 @@ foreach ($users as $user) {
 
             // Max Annual Donation Amount (Last 5 FYs)
             $kpi_prefix.'max_annual_donation_amount_5fy' => 0,
-    );
+            );
 
     $args = array(
             'posts_per_page' => -1,
@@ -298,6 +298,15 @@ foreach ($users as $user) {
         }
     }
     unset($transactions);
+
+    // Use historical tranasction data where relevant
+    if (!empty($user->{$kpi_prefix.'offset_first_donation_date'})) {
+        $user_meta[$kpi_prefix.'first_donation_date'] = $user->{$kpi_prefix.'offset_first_donation_date'};
+    }
+    if (empty($user_meta[$kpi_prefix.'last_donation_date']) && !empty($user->{$kpi_prefix.'offset_last_donation_date'})) {
+        $user_meta[$kpi_prefix.'last_donation_date'] = $user->{$kpi_prefix.'offset_last_donation_date'};
+        $user_meta[$kpi_prefix.'last_donation_amount'] = $user->{$kpi_prefix.'offset_last_donation_amount'};
+    }
 
     // Total for last 5 FY
     $user_meta[$kpi_prefix.'donation_count_5fy'] = $user_meta[$kpi_prefix.'donation_count_fy_0']+$user_meta[$kpi_prefix.'donation_count_fy_1']+$user_meta[$kpi_prefix.'donation_count_fy_2']+$user_meta[$kpi_prefix.'donation_count_fy_3']+$user_meta[$kpi_prefix.'donation_count_fy_4'];
