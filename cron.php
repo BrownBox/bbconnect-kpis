@@ -31,7 +31,12 @@ if (!defined('WP_DEBUG')) {
 ini_set('memory_limit', '2056M'); // 2GB should be plenty for most sites
 
 // Load WP
+echo 'Loading WP'."\n";
 require_once(dirname(__FILE__).'/../../../wp-load.php');
+
+// Force script output to be generated as it goes rather than all at the end
+ob_end_flush();
+ob_implicit_flush();
 
 global $wpdb, $blog_id;
 
