@@ -52,11 +52,21 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
         }
 
         if (strpos($filename, '.php') !== false && strpos($filename, '_sample') === false) {
-            $files[] = $filename;
+            // Only run MailChimp cron if MailChimp addon active and configured
+            if (strpos($filename, 'mailchimp') !== false) {
+                if (defined('BBCONNECT_MAILCHIMP_API_KEY') && !empty(BBCONNECT_MAILCHIMP_API_KEY)) {
+                    $files[] = $dir_name.$filename;
+                }
+            } else {
+                $files[] = $dir_name.$filename;
+            }
         }
     }
     closedir($dir);
     sort($files);
+
+    // Add support for custom files
+    $files = apply_filters('bbconnect_kpi_cron_files', $files);
 
     if (is_multisite()) {
         // Get all blog ids
@@ -111,10 +121,15 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
         bbconnect_kpi_cron_flush();
 
         foreach ($files as $filename) {
+            if (!file_exists($filename)) {
+                echo 'ERROR: file '.$filename.' not found!'."\n";
+                bbconnect_kpi_cron_flush();
+                continue;
+            }
             $part_start = microtime(true);
             echo 'Running '.$filename."\n";
             bbconnect_kpi_cron_flush();
-            require_once($dir_name.$filename);
+            require_once($filename);
             $part_end = microtime(true);
             echo $filename.' complete in '.($part_end-$part_start)." seconds\n";
             bbconnect_kpi_cron_flush();
