@@ -6,7 +6,9 @@ define('BBCONNECT_KPI_CRON', true);
 
 // Lockfile to stop cron running over the top of itself
 $lockfile = dirname(__FILE__).'/.LOCK';
-if (file_exists($lockfile) && filemtime($lockfile) >= strtotime('-12 hours')) {
+$logfile = dirname(__FILE__).'/cron.log';
+$last_line = trim(`tail -n 1 $logfile`);
+if (file_exists($lockfile) && filemtime($lockfile) >= strtotime('-23 hours') && $last_line != 'Lockfile exists. Exiting.') {
     die('Lockfile exists. Exiting.'."\n");
 }
 
