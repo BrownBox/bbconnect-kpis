@@ -51,19 +51,14 @@ function bbconnect_kpi_cron_flush() {
  */
 add_action('bb_cart_post_purchase', 'bbconnect_kpi_set_recurring_field_value');
 function bbconnect_kpi_set_recurring_field_value($cart_items, $entry, $form, $post_id) {
-    $kpi_prefix = 'kpi_';
-    if (is_multisite() && get_current_blog_id() != SITE_ID_CURRENT_SITE) {
-        $kpi_prefix .= get_current_blog_id().'_';
-    }
-    foreach ($cart_items as $item) {
-        if (!empty($item['frequency']) && $item['frequency'] != 'one-off') {
-            foreach ($form['fields'] as $field){
-                if ($field->type == 'email'){
-                    $email = $entry[$field['id']];
-                }
+    if (!empty($cart_items['donations'])) {
+        foreach ($cart_items['donations'] as $item) {
+            if (!empty($item['frequency']) && $item['frequency'] != 'one-off') {
+                $transaction = get_post($post_id);
+                $user = new WP_User($transaction->post_author);
+                update_user_meta($user->ID, 'recurring_donation', 'true');
+                break;
             }
-            $user = get_user_by_email($email);
-            update_user_meta($user->ID, $kpi_prefix.'recurring_donation', true);
         }
     }
 }
