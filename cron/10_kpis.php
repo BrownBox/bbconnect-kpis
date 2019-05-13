@@ -167,7 +167,8 @@ foreach ($users as $user) {
 
             // Max Annual Donation Amount (Last 5 FYs)
             $kpi_prefix.'max_annual_donation_amount_5fy' => 0,
-            );
+    );
+    $user_meta = apply_filters('bbconnect_kpis_cron_kpi_defaults', $user_meta, $kpi_prefix, $user);
 
     $args = array(
             'posts_per_page' => -1,
@@ -296,6 +297,8 @@ foreach ($users as $user) {
             $user_meta[$kpi_prefix.'donation_count_fy_5']++;
             $user_meta[$kpi_prefix.'donation_amount_fy_5'] += $amount;
         }
+
+        $user_meta = apply_filters('bbconnect_kpis_cron_transaction_kpis', $user_meta, $kpi_prefix, $user, $transaction, $amount, $today);
     }
     unset($transactions);
 
@@ -378,6 +381,8 @@ foreach ($users as $user) {
 
     $user_meta[$kpi_prefix.'days_since_created'] = $days_since_created->days;
     unset($date_registered, $days_since_created);
+
+    $user_meta = apply_filters('bbconnect_kpis_cron_kpis', $user_meta, $kpi_prefix, $user, $today);
 
     // Now we can update all the relevant meta fields
     $table = _get_meta_table('user');
