@@ -49,7 +49,7 @@ function bbconnect_kpi_cron_flush() {
 /*
  * Set recurring donor to true
  */
-add_action('bb_cart_post_purchase', 'bbconnect_kpi_set_recurring_field_value');
+add_action('bb_cart_post_purchase', 'bbconnect_kpi_set_recurring_field_value', 10, 4);
 function bbconnect_kpi_set_recurring_field_value($cart_items, $entry, $form, $post_id) {
     if (!empty($cart_items['donations'])) {
         foreach ($cart_items['donations'] as $item) {
