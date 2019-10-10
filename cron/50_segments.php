@@ -41,8 +41,10 @@ foreach ($searches as $search) {
         if (strtotime($user->user_registered) >= strtotime($today->format('Y-m-d'))) { // Skip if user created after date we're doing calculations for
             continue;
         }
+        unset($user);
         update_user_meta($user_id, 'bbconnect_'.$wp_prefix.'segment_id', $search->ID);
     }
     unset($search_results, $userids);
+    gc_collect_cycles();
 }
 unset($searches);
