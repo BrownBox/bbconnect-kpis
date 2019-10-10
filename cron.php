@@ -22,17 +22,18 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
 }
 $_SERVER['HTTP_HOST'] = $http_host;
 
-// Error reporting and memory settings
+// Error reporting
 error_reporting(E_ALL & ~E_STRICT);
 ini_set('display_errors', 1);
 if (!defined('WP_DEBUG')) {
     define('WP_DEBUG', true);
 }
-ini_set('memory_limit', '2056M'); // 2GB should be plenty for most sites
 
 // Load WP
 echo 'Loading WP'."\n";
 require_once(dirname(__FILE__).'/../../../wp-load.php');
+
+ini_set('memory_limit', apply_filters('bbconnect_kpi_cron_memory_limit', '2056M')); // 2GB should be plenty for most sites
 
 // Force script output to be generated as it goes rather than all at the end
 ob_end_flush();
