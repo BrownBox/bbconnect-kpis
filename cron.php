@@ -114,28 +114,39 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
         echo 'KPI prefix is '.$kpi_prefix.' and WP Prefix is '.$wp_prefix."\n";
         bbconnect_kpi_cron_flush();
 
-        $args = array(
-                'blog_id' => $tmp_blog_id,
-        );
-        $users = get_users($args);
-        echo count($users).' users found'."\n";
-        bbconnect_kpi_cron_flush();
+        $limit = apply_filters('bbconnect_kpi_cron_users_per_page', 5000);
+        $offset = 0;
+        $pass = 1;
+        do {
+            $args = array(
+                    'blog_id' => $tmp_blog_id,
+                    'number' => $limit,
+                    'offset' => $offset,
+            );
+            $users = get_users($args);
+            echo 'Pass #'.$pass++.': '.count($users).' users found'."\n";
+            bbconnect_kpi_cron_flush();
 
-        foreach ($files as $filename) {
-            if (!file_exists($filename)) {
-                echo 'ERROR: file '.$filename.' not found!'."\n";
-                bbconnect_kpi_cron_flush();
-                continue;
+            if (count($users) > 0) {
+                foreach ($files as $filename) {
+                    if (!file_exists($filename)) {
+                        echo 'ERROR: file '.$filename.' not found!'."\n";
+                        bbconnect_kpi_cron_flush();
+                        continue;
+                    }
+                    $part_start = microtime(true);
+                    echo 'Running '.$filename."\n";
+                    bbconnect_kpi_cron_flush();
+                    require($filename);
+                    $part_end = microtime(true);
+                    echo $filename.' complete in '.($part_end-$part_start)." seconds\n";
+                    bbconnect_kpi_cron_flush();
+                    gc_collect_cycles();
+                }
             }
-            $part_start = microtime(true);
-            echo 'Running '.$filename."\n";
-            bbconnect_kpi_cron_flush();
-            require_once($filename);
-            $part_end = microtime(true);
-            echo $filename.' complete in '.($part_end-$part_start)." seconds\n";
-            bbconnect_kpi_cron_flush();
-            gc_collect_cycles();
-        }
+
+            $offset += $limit;
+        } while (count($users) > 0);
 
         update_option('bbconnect_kpis_last_cron_date', strtotime($today->format('Y-m-d')));
     }
@@ -144,7 +155,6 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
         $today->add(new DateInterval('P1D'));
         file_put_contents(dirname(__FILE__).'/next_date', $today->format('Y-m-d'));
     }
-
 
     $end = microtime(true);
     $time = $end-$start;
