@@ -25,7 +25,10 @@ foreach ($users as $user) {
         ));
 
         if ($user_registered['success_count'] > 0) {
-            // Update some meta
+            // Make sure the CRM knows they're subscribed
+            update_user_meta($user->ID, 'bbconnect_bbc_subscription', 'true');
+
+            // Update some meta in MailChimp
             $push_data = array();
 
             // Personalisation key
@@ -89,6 +92,10 @@ foreach ($users as $user) {
             }
         }
     } catch (BB\Mailchimp\Mailchimp_Error $e) {
+        if ($e instanceof BB\Mailchimp\Mailchimp_List_NotSubscribed) {
+            // Make sure the CRM knows they're not subscribed
+            update_user_meta($user->ID, 'bbconnect_bbc_subscription', 'false');
+        }
         echo '    MailChimp Error! '.$e->getMessage()."\n";
         bbconnect_kpi_cron_flush();
     }
