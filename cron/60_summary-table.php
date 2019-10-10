@@ -19,12 +19,10 @@ bbconnect_kpi_cron_flush();
 //LOOP THROUGH ALL SEARCH CRITERIA OR SEGMENTS
 foreach ($segments as $segment) {
     echo '    '.$segment->post_title."\n";
-    $segment_array = unserialize($segment->post_content);
 
     $args = array(
             'blog_id' => $blog_id,
             'orderby' => 'nicename',
-//             'role' => 'subscriber',
             'meta_query' => array(
                     array(
                             'key' => 'bbconnect_'.$wp_prefix.'segment_id',
