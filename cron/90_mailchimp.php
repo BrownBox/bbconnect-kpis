@@ -24,7 +24,7 @@ foreach ($users as $user) {
                 'emails'    => array(array('email' => $user->user_email)),
         ));
 
-        if ($user_registered['success_count'] > 0) {
+        if ($user_registered['success_count'] > 0 && 'subscribed' == $user_registered['data'][0]['status']) {
             // Make sure the CRM knows they're subscribed
             update_user_meta($user->ID, 'bbconnect_bbc_subscription', 'true');
 
@@ -92,6 +92,9 @@ foreach ($users as $user) {
                 bbconnect_kpi_cron_flush();
                 $mailchimp_Lists->updateMember($list_id, array('email' => $user->user_email), array('groupings' => $groupings));
             }
+        } else {
+        	// Make sure the CRM knows they're not subscribed
+        	update_user_meta($user->ID, 'bbconnect_bbc_subscription', 'false');
         }
     } catch (BB\Mailchimp\Mailchimp_Error $e) {
         if ($e instanceof BB\Mailchimp\Mailchimp_List_NotSubscribed) {
