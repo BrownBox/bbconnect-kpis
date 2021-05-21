@@ -84,6 +84,8 @@ foreach ($users as $user) {
                 }
             }
 
+            $groupings = apply_filters('bbconnect_kpi_cron_mailchimp_groupings', $groupings, $user, $kpi_prefix, $push_data);
+
             // Only update MailChimp if something has changed
             if (maybe_serialize($existing_groupings) != maybe_serialize($groupings)) {
                 echo '    Updating groups for '.$user->ID.' ('.$user->user_email.')'."\n";
