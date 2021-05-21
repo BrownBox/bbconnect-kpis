@@ -192,6 +192,7 @@ function bbconnect_kpi_db_update_0_3() {
             KEY rule (rule)
         ) $charset_collate;";
 
+    require_once(ABSPATH.'wp-admin/includes/upgrade.php');
     dbDelta($sql_user_history);
     dbDelta($sql_giving_summary);
 }
