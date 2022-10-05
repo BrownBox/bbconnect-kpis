@@ -93,10 +93,12 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
         }
 
         $last_run = get_option('bbconnect_kpis_last_cron_date', 0);
-        echo 'Last run was '.$last_run.' ('.date('Y-m-d H:i:s', $last_run).'); today is '.strtotime($today->format('Y-m-d')).' ('.$today->format('Y-m-d H:i:s').')'."\n";
-        if (strtotime($today->format('Y-m-d')) <= $last_run) { // Already processed this site today
-            echo 'Nothing to do!'."\n";
-            continue;
+        $last_run_date = DateTime::createFromFormat('U', $last_run, $tz);
+        echo 'Today is '.strtotime($today->format('Y-m-d')).' ('.$today->format('Y-m-d').')'."\n";
+        echo 'Last run was '.strtotime($last_run_date->format('Y-m-d')).' ('.$last_run_date->format('Y-m-d').')'."\n";
+        if (strtotime($today->format('Y-m-d')) <= strtotime($last_run_date->format('Y-m-d'))) { // Already processed this site today
+        	echo 'Nothing to do!'."\n";
+        	continue;
         }
 
         $yesterday = clone $today;
