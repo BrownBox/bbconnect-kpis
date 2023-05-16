@@ -53,14 +53,7 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
         }
 
         if (strpos($filename, '.php') !== false && strpos($filename, '_sample') === false) {
-            // Only run MailChimp cron if MailChimp addon active and configured
-            if (strpos($filename, 'mailchimp') !== false) {
-                if (defined('BBCONNECT_MAILCHIMP_API_KEY') && !empty(BBCONNECT_MAILCHIMP_API_KEY)) {
-                    $files[] = $dir_name.$filename;
-                }
-            } else {
-                $files[] = $dir_name.$filename;
-            }
+            $files[] = $dir_name.$filename;
         }
     }
     closedir($dir);
