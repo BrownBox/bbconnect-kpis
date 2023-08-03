@@ -199,7 +199,7 @@ class bbconnectKpiReports {
         if (is_multisite() && $blog_id != SITE_ID_CURRENT_SITE) {
             $kpi_prefix .= $blog_id.'_';
         }
-        foreach ($users as $key => $user) {
+        foreach ($users as $user) {
             $first_donation_date = get_user_meta($user->ID, $kpi_prefix.'first_donation_date', true);
             if (empty($first_donation_date)) {
                 continue;
@@ -209,19 +209,19 @@ class bbconnectKpiReports {
             $first_donation_year = bbconnect_kpi_calculate_fiscal_year_for_date($first_donation_date);
 
             if ($first_donation_month == $month) {
-                $count_month = $count_month + 1;
+                $count_month++;
             } else if($first_donation_month == $month_1) {
-                $count_month_1 = $count_month_1 + 1;
+                $count_month_1++;
             } else if($first_donation_month == $month_2) {
-                $count_month_2 = $count_month_2 + 1;
+                $count_month_2++;
             }
 
             if ($first_donation_year == $year) {
-                $count_year = $count_year + 1;
+                $count_year++;
             } else if($first_donation_year == $year_1) {
-                $count_year_1 = $count_year_1 + 1;
+                $count_year_1++;
             } else if($first_donation_year == $year_2) {
-                $count_year_2 = $count_year_2 + 1;
+                $count_year_2++;
             }
         }
         $summary['month'] = $count_month;
@@ -257,13 +257,6 @@ class bbconnectKpiReports {
         $year_1 = $var_date->format("Y");
         $var_date->sub(new DateInterval('P1Y'));
         $year_2 = $var_date->format("Y");
-
-        $count_month = 0;
-        $count_month_1 = 0;
-        $count_month_2 = 0;
-        $count_year = 0;
-        $count_year_1 = 0;
-        $count_year_2 = 0;
 
         $summary = array();
 
@@ -347,20 +340,20 @@ class bbconnectKpiReports {
         if (is_multisite() && $blog_id != SITE_ID_CURRENT_SITE) {
             $kpi_prefix .= $blog_id.'_';
         }
-        foreach ($users as $key => $user) {
-            $user_amount_month = get_user_meta($user->ID, $kpi_prefix.'donation_amount_month_to_date', true);
-            $user_amount_month_1 = get_user_meta($user->ID, $kpi_prefix.'donation_amount_month_1', true);
-            $user_amount_month_2 = get_user_meta($user->ID, $kpi_prefix.'donation_amount_month_2', true);
-            $user_amount_year = get_user_meta($user->ID, $kpi_prefix.'donation_amount_fy_0', true);
-            $user_amount_year_1 = get_user_meta($user->ID, $kpi_prefix.'donation_amount_fy_1', true);
-            $user_amount_year_2 = get_user_meta($user->ID, $kpi_prefix.'donation_amount_fy_2', true);
+        foreach ($users as $user) {
+            $user_amount_month = (float)get_user_meta($user->ID, $kpi_prefix.'donation_amount_month_to_date', true);
+            $user_amount_month_1 = (float)get_user_meta($user->ID, $kpi_prefix.'donation_amount_month_1', true);
+            $user_amount_month_2 = (float)get_user_meta($user->ID, $kpi_prefix.'donation_amount_month_2', true);
+            $user_amount_year = (float)get_user_meta($user->ID, $kpi_prefix.'donation_amount_fy_0', true);
+            $user_amount_year_1 = (float)get_user_meta($user->ID, $kpi_prefix.'donation_amount_fy_1', true);
+            $user_amount_year_2 = (float)get_user_meta($user->ID, $kpi_prefix.'donation_amount_fy_2', true);
 
-            $amount_month = $amount_month + $user_amount_month;
-            $amount_month_1 = $amount_month_1 + $user_amount_month_1;
-            $amount_month_2 = $amount_month_2 + $user_amount_month_2;
-            $amount_year = $amount_year + $user_amount_year;
-            $amount_year_1 = $amount_year_1 + $user_amount_year_1;
-            $amount_year_2 = $amount_year_2 + $user_amount_year_2;
+            $amount_month += $user_amount_month;
+            $amount_month_1 += $user_amount_month_1;
+            $amount_month_2 += $user_amount_month_2;
+            $amount_year += $user_amount_year;
+            $amount_year_1 += $user_amount_year_1;
+            $amount_year_2 += $user_amount_year_2;
         }
         $summary['month'] = $amount_month;
         $summary['month_1'] = $amount_month_1;
@@ -405,20 +398,20 @@ class bbconnectKpiReports {
         if (is_multisite() && $blog_id != SITE_ID_CURRENT_SITE) {
             $kpi_prefix .= $blog_id.'_';
         }
-        foreach ($users as $key => $user) {
-            $user_count_month = get_user_meta($user->ID, $kpi_prefix.'donation_count_month_to_date', true);
-            $user_count_month_1 = get_user_meta($user->ID, $kpi_prefix.'donation_count_month_1', true);
-            $user_count_month_2 = get_user_meta($user->ID, $kpi_prefix.'donation_count_month_2', true);
-            $user_count_year = get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_0', true);
-            $user_count_year_1 = get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_1', true);
-            $user_count_year_2 = get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_2', true);
+        foreach ($users as $user) {
+            $user_count_month = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_month_to_date', true);
+            $user_count_month_1 = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_month_1', true);
+            $user_count_month_2 = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_month_2', true);
+            $user_count_year = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_0', true);
+            $user_count_year_1 = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_1', true);
+            $user_count_year_2 = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_2', true);
 
-            $count_month = $count_month + $user_count_month;
-            $count_month_1 = $count_month_1 + $user_count_month_1;
-            $count_month_2 = $count_month_2 + $user_count_month_2;
-            $count_year = $count_year + $user_count_year;
-            $count_year_1 = $count_year_1 + $user_count_year_1;
-            $count_year_2 = $count_year_2 + $user_count_year_2;
+            $count_month += $user_count_month;
+            $count_month_1 += $user_count_month_1;
+            $count_month_2 += $user_count_month_2;
+            $count_year += $user_count_year;
+            $count_year_1 += $user_count_year_1;
+            $count_year_2 += $user_count_year_2;
         }
         $summary['month'] = $count_month;
         $summary['month_1'] = $count_month_1;
@@ -447,32 +440,32 @@ class bbconnectKpiReports {
         if (is_multisite() && $blog_id != SITE_ID_CURRENT_SITE) {
             $kpi_prefix .= $blog_id.'_';
         }
-        foreach ($users as $key => $user) {
-            $donations_month = get_user_meta($user->ID, $kpi_prefix.'donation_count_month_to_date', true);
-            $donations_month_1 = get_user_meta($user->ID, $kpi_prefix.'donation_count_month_1', true);
-            $donations_month_2 = get_user_meta($user->ID, $kpi_prefix.'donation_count_month_2', true);
-            $donations_year = get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_0', true);
-            $donations_year_1 = get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_1', true);
-            $donations_year_2 = get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_2', true);
+        foreach ($users as $user) {
+            $donations_month = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_month_to_date', true);
+            $donations_month_1 = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_month_1', true);
+            $donations_month_2 = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_month_2', true);
+            $donations_year = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_0', true);
+            $donations_year_1 = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_1', true);
+            $donations_year_2 = (int)get_user_meta($user->ID, $kpi_prefix.'donation_count_fy_2', true);
 
             if ($donations_month > 0) {
-                $count_month = $count_month + 1;
+                $count_month++;
             }
             if ($donations_month_1 > 0) {
-                $count_month_1 = $count_month_1 + 1;
+                $count_month_1++;
             }
             if ($donations_month_2 > 0) {
-                $count_month_2 = $count_month_2 + 1;
+                $count_month_2++;
             }
 
             if ($donations_year > 0) {
-                $count_year = $count_year + 1;
+                $count_year++;
             }
             if ($donations_year_1 > 0) {
-                $count_year_1 = $count_year_1 + 1;
+                $count_year_1++;
             }
             if ($donations_year_2 > 0) {
-                $count_year_2 = $count_year_2 + 1;
+                $count_year_2++;
             }
         }
         $summary['month'] = $count_month;
@@ -642,7 +635,7 @@ class bbconnectKpiReports {
         }
         if (isset($totals) && isset($counts) && isset($averages)) {
             foreach ($vars as $var) {
-                $averages->$var = number_format($totals->$var/$counts->$var, 2);
+            	$averages->$var = number_format((float)$totals->$var/(float)$counts->$var, 2);
             }
         }
 
