@@ -38,13 +38,13 @@ foreach ($searches as $search) {
     $userids = $search_results['all_search'];
     echo '      '.count($userids).' users match'."\n";
     bbconnect_kpi_cron_flush();
-    foreach ($userids as $user_id) {
-        $user = new WP_User($user_id);
+    foreach ($users as $user) {
         if (strtotime($user->user_registered) >= strtotime($today->format('Y-m-d'))) { // Skip if user created after date we're doing calculations for
             continue;
         }
-        unset($user);
-        update_user_meta($user_id, 'bbconnect_'.$wp_prefix.'segment_id', $search->ID);
+        if (in_array($user->ID, $userids)) { // Only update users in the current batch
+        	update_user_meta($user->ID, 'bbconnect_'.$wp_prefix.'segment_id', $search->ID);
+        }
     }
     unset($search_array, $post_data, $search_results, $userids);
     gc_collect_cycles();
