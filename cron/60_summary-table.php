@@ -1,4 +1,15 @@
 <?php
+/**
+ * Cron script which stores daily transaction summary for each user. Needs to be run after the segments script.
+ *
+ * The following variables used here are defined in the core cron.php script:
+ * @var DateTime $today Object for the current date
+ * @var DateTime $yesterday Object for the previous day
+ * @var string $wp_prefix Prefix for DB tables
+ * @var integer $blog_id Current blog ID
+ * @var wpdb $wpdb Database connection object
+ */
+
 $args = array(
         'post_type' => 'savedsearch',
         'post_status' => 'publish',
@@ -38,12 +49,15 @@ foreach ($segments as $segment) {
     }
     echo '      '.count($segment_users).' users match'."\n";
     bbconnect_kpi_cron_flush();
+    if (count($segment_users) == 0) {
+    	continue;
+    }
 
     $report_manager = new bbconnectKpiReports($segment_users, $segment->ID, $today, $yesterday);
     $rules = $report_manager->get_rules();
 
     $summary_table_name = $report_manager->get_summary_table_name();
-    foreach ($rules as $rule => $label) {
+    foreach (array_keys($rules) as $rule) {
         set_time_limit(3600);
         if (false !== $summary = $report_manager->process_rule($rule)) {
             // Check first if any record for the month exists

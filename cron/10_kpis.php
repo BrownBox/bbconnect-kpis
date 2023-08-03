@@ -1,11 +1,15 @@
 <?php
 /**
- * Sample cron script which updates various custom KPI fields for users
+ * Cron script which updates various custom KPI fields for users
+ *
  * The following variables used here are defined in the core cron.php script:
- *    $users array A list of all users for the current site
- *    $today DateTime Object for the current date
- *    $yesterday DateTime Object for the previous day
- *    $kpi_prefix String Prefix for KPI fields
+ * @var WP_User[] $users A list of all users for the current site
+ * @var DateTime $today Object for the current date
+ * @var DateTime $yesterday Object for the previous day
+ * @var DateTime $last_run_date Object for the date the cron last successfully ran
+ * @var string $kpi_prefix Prefix for KPI fields
+ * @var DateTimeZone $tz Site timezone
+ * @var wpdb $wpdb Database connection object
  */
 
 $current_financial_year = bbconnect_kpi_calculate_fiscal_year_for_date($today->format("Y-m-d"));
@@ -42,6 +46,7 @@ foreach ($missing_dates as $missing_date) {
 		$dates[] = $year_date->format('Y-m-d');
 	}
 }
+unset($missing_dates);
 
 $dates = array_unique($dates);
 
@@ -233,7 +238,7 @@ foreach ($users as $user) {
 
 				// Max Annual Donation Amount (Last 5 FYs)
 				$kpi_prefix.'max_annual_donation_amount_5fy' => 0,
-				);
+		);
 		$user_meta = apply_filters('bbconnect_kpis_cron_kpi_defaults', $user_meta, $kpi_prefix, $user);
 
 		$args = array(
@@ -251,7 +256,7 @@ foreach ($users as $user) {
 		);
 		$transactions = get_posts($args);
 
-		foreach ($transactions as $transactionkey => $transaction) {
+		foreach ($transactions as $transaction) {
 			$transaction_metadata = get_post_meta($transaction->ID);
 			$amount = isset($transaction_metadata['donation_amount'][0]) ? $transaction_metadata['donation_amount'][0] : 0;
 			if ($amount <= 0) {
@@ -461,9 +466,7 @@ foreach ($users as $user) {
 	$table = _get_meta_table('user');
 	$values = array_keys($user_meta);
 	$keys = array();
-	foreach ($values as $value) {
-		$keys[] = '%s';
-	}
+	$keys = array_pad($keys, count($values), '%s');
 	$keys = implode(',', $keys);
 	$values[] = $user->ID;
 	$sql = "DELETE FROM $table WHERE meta_key IN ($keys) AND user_id = %d";
@@ -473,7 +476,8 @@ foreach ($users as $user) {
 		$wpdb->query($wpdb->prepare($sql, array($meta_value, $meta_key, $user->ID)));
 	}
 
-	unset($user_meta);
+	unset($user_meta, $keys, $values);
+	gc_collect_cycles();
 
 	$user_count++;
 	if ($user_count % 100 == 0) {
@@ -482,3 +486,5 @@ foreach ($users as $user) {
 
 	bbconnect_kpi_cron_flush();
 }
+unset($dates);
+gc_collect_cycles();

@@ -3,6 +3,7 @@
  * MailChimp updates
  * Requires Connexions MailChimp add-on
  *
+ * The following variables used here are defined in the core cron.php script:
  * @var WP_User[] $users A list of all users for the current site
  * @var DateTime $today The current date
  * @var DateTime $yesterday The previous day

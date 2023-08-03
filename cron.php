@@ -117,6 +117,7 @@ if (!defined('BBCONNECT_KPI_VERSION')) { // Make sure the plugin is enabled
                     'blog_id' => $tmp_blog_id,
                     'number' => $limit,
                     'offset' => $offset,
+            		'count_total' => false,
             );
             $users = get_users($args);
             echo 'Pass #'.$pass++.': '.count($users).' users found'."\n";

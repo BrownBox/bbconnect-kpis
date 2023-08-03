@@ -1,9 +1,11 @@
 <?php
 /**
- * Sample cron script which updates user segments. Needs to be run after the sample KPI script as the segmentation generally depends on KPI data
+ * Cron script which updates user segments. Needs to be run after the KPI script as the segmentation generally depends on KPI data
+ *
  * The following variables used here are defined in the core cron.php script:
- *    $users array A list of all users for the current site
- *    $today DateTime Object for the current date
+ * @var WP_User[] $users A list of all users for the current site
+ * @var DateTime $today Object for the current date
+ * @var string $wp_prefix Prefix for DB tables
  */
 
 $args = array(
@@ -44,7 +46,8 @@ foreach ($searches as $search) {
         unset($user);
         update_user_meta($user_id, 'bbconnect_'.$wp_prefix.'segment_id', $search->ID);
     }
-    unset($search_results, $userids);
+    unset($search_array, $post_data, $search_results, $userids);
     gc_collect_cycles();
 }
 unset($searches);
+gc_collect_cycles();
