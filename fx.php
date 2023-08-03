@@ -14,7 +14,7 @@ function bbconnect_kpi_calculate_fiscal_year_for_date($inputDate, $fyStart = '07
     } else {
         $date = strtotime($inputDate);
     }
-    $inputyear = strftime('%Y', $date);
+    $inputyear = date('Y', $date);
 
     $fystartdate = strtotime($inputyear.'-'.$fyStart);
     $fyenddate = strtotime($inputyear.'-'.$fyEnd);
