@@ -25,6 +25,10 @@ if (defined('BBCONNECT_MAILCHIMP_VERSION') && function_exists('bbconnect_mailchi
 					continue;
 				}
 			}
+			// Skip users with no email or clearly fake emails
+			if (empty($user->user_email) || strpos($user->user_email, '@example.com') !== false || strpos($user->user_email, '.invalid') !== false) {
+				continue;
+			}
 
 			echo '	Checking details for '.$user->ID.' ('.$user->user_email.')'."\n";
 			bbconnect_kpi_cron_flush();
