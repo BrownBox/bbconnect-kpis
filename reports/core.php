@@ -510,7 +510,7 @@ class bbconnectKpiReports {
         ";
 
         $results = $wpdb->get_results($report_query);
-        uasort($results, array(self, 'sort_results_by_rule'));
+        uasort($results, array(__CLASS__, 'sort_results_by_rule'));
         self::format_results($results);
 
         return $results;
